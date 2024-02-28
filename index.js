@@ -1,9 +1,11 @@
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 let users = [
   {
+    id: 1,
     user: "59990001",
     firstname: "Markku",
     middlename: "Tapio",
@@ -12,6 +14,7 @@ let users = [
   }
 ]
 
+app.use(cors());
 app.use(express.json());
 
 const requestLogger = (request, response, next) => {
@@ -25,17 +28,42 @@ const requestLogger = (request, response, next) => {
 app.use(requestLogger);
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello world!</h1>')
+  response.send('<h1>Hello world!</h1>');
 });
 
 app.get('/api/users', (request, response) => {
-  response.json(users)
+  response.json(users);
+});
+
+app.get('/api/users/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const user = users.find(user => user.id === id);
+  if (user) {
+    response.json(user);
+  } else {
+    response.status(404).end();
+  }
+});
+
+app.delete('/api/users/:id', (request, response) => {
+  const id = Number(request.params.id);
+  users = users.filter(user => user.id !== id);
+
+  response.status(204).end();
 });
 
 app.post('/api/users', (request, response) => {
-    const user = request.body;
-    console.log(user);
-    response.json(user);
+
+  const maxId = users.length > 0
+    ? Math.max(...users.map(n => n.id)) 
+    : 0
+
+  const user = request.body;
+  user.id = maxId + 1;
+
+  users = users.concat(user);
+
+  response.json(user);
 });
 
 const unknownEndpoint = (request, response) => {
@@ -44,7 +72,7 @@ const unknownEndpoint = (request, response) => {
   
 app.use(unknownEndpoint);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 });
