@@ -3,6 +3,10 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+const config = require('./utils/config');
+const logger = require('./utils/logger');
+const middleware = require('./utils/middleware');
+
 let users = [
   {
     id: 1,
@@ -17,15 +21,7 @@ let users = [
 app.use(cors());
 app.use(express.json());
 
-const requestLogger = (request, response, next) => {
-    console.log('Method:', request.method);
-    console.log('Path:  ', request.path);
-    console.log('Body:  ', request.body);
-    console.log('   ');
-    next();
-};
-
-app.use(requestLogger);
+app.use(middleware.requestLogger);
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello world!</h1>');
@@ -35,7 +31,7 @@ app.get('/api/users', (request, response) => {
   response.json(users);
 });
 
-app.get('/api/users/:id', (request, response) => {
+app.get('/api/users/:id', (request, response, next) => {
   const id = Number(request.params.id);
   const user = users.find(user => user.id === id);
   if (user) {
@@ -43,13 +39,15 @@ app.get('/api/users/:id', (request, response) => {
   } else {
     response.status(404).end();
   }
+  next(error);
 });
 
-app.delete('/api/users/:id', (request, response) => {
+app.delete('/api/users/:id', (request, response, next) => {
   const id = Number(request.params.id);
   users = users.filter(user => user.id !== id);
 
   response.status(204).end();
+  next(error);
 });
 
 app.post('/api/users', (request, response) => {
@@ -66,11 +64,8 @@ app.post('/api/users', (request, response) => {
   response.json(user);
 });
 
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
-};
-  
-app.use(unknownEndpoint);
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
