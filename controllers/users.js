@@ -1,20 +1,14 @@
 
+require('dotenv').config();
+const { Sequelize, QueryTypes } = require('sequelize');
+const sequelize = new Sequelize(process.env.DATABASE_URL);
+
 const usersRouter = require('express').Router();
 
-let users = [
-    {
-      id: 1,
-      user: "59990001",
-      firstname: "Markku",
-      middlename: "Tapio",
-      lastname: "Vaara",
-      password: "Seppo2016"
-    }
-]
-
-usersRouter.get('/', (request, response) => {
+usersRouter.get('/', async (request, response) => {
+    const users = await sequelize.query("SELECT * FROM users", { type: QueryTypes.SELECT });
     response.json(users);
-  });
+});
 
 usersRouter.get('/:id', (request, response, next) => {
     const id = Number(request.params.id);
