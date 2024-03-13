@@ -1,18 +1,12 @@
 
+const Account = require('../models/account');
+
 const accountsRouter = require('express').Router();
 
-let accounts = [
-    {
-      id: 1,
-      account: "99990001",
-      saldo: 54545,
-      userid: 1
-    }
-]
-
-accountsRouter.get('/', (request, response) => {
+accountsRouter.get('/', async (request, response) => {
+    const accounts = await Account.findAll();
     response.json(accounts);
-  });
+});
 
 accountsRouter.get('/:id', (request, response, next) => {
     const id = Number(request.params.id);

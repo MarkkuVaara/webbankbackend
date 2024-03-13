@@ -1,19 +1,12 @@
 
+const Transaction = require('../models/transaction');
+
 const transactionsRouter = require('express').Router();
 
-let transactions = [
-    {
-      id: 1,
-      amount: -200,
-      date: "11/01/2023",
-      type: "loan",
-      accountid: 1
-    }
-]
-
-transactionsRouter.get('/', (request, response) => {
+transactionsRouter.get('/', async (request, response) => {
+    const transactions = await Transaction.findAll();
     response.json(transactions);
-  });
+});
 
 transactionsRouter.get('/:id', (request, response, next) => {
     const id = Number(request.params.id);

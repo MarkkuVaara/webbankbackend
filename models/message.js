@@ -19,11 +19,11 @@ Message.init({
       allowNull: false
     },
     title: {
-      type: DataTypes.VARCHAR(50),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     message: {
-      type: DataTypes.VARCHAR(1000),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     userid: {

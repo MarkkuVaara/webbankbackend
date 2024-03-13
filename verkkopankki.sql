@@ -41,6 +41,10 @@ CREATE TABLE transactions
   transactiontype VARCHAR(20) NOT NULL,
   transactioner VARCHAR(50) NOT NULL,
   transaction FLOAT NOT NULL,
+  pending BOOLEAN NOT NULL,
+  target VARCHAR(50),
+  message VARCHAR(500),
+  reference INTEGER,
   accountid INT NOT NULL REFERENCES accounts
 );
 
@@ -50,11 +54,11 @@ insert into accounts (creationdate, name, balance, balancelimit, userid) values 
 insert into accounts (creationdate, name, balance, balancelimit, userid) values ('11/05/2023', 'SÄÄSTÖTILI 1009004577', 1010, null, 1);
 insert into accounts (creationdate, name, balance, balancelimit, userid) values ('11/15/2023', 'LAINATILI 1008001110', -2915, -3000, 1);
 
-insert into transactions (date, transactiontype, transactioner, transaction, accountid) values ('11/19/2023', 'shop', 'K-Citymarket', -22, 1);
-insert into transactions (date, transactiontype, transactioner, transaction, accountid) values ('11/18/2023', 'unknown', 'Punttipojat', -160, 1);
-insert into transactions (date, transactiontype, transactioner, transaction, accountid) values ('11/17/2023', 'loan', 'Monetarum opintolaina', -100, 1);
-insert into transactions (date, transactiontype, transactioner, transaction, accountid) values ('11/10/2023', 'gov', 'KELA', 1100, 1);
-insert into transactions (date, transactiontype, transactioner, transaction, accountid) values ('10/30/2023', 'unknown', 'Markku Vaara', 500, 2);
+insert into transactions (date, transactiontype, transactioner, transaction, pending, accountid) values ('11/19/2023', 'shop', 'K-Citymarket', -22, false, 1);
+insert into transactions (date, transactiontype, transactioner, transaction, pending, accountid) values ('11/18/2023', 'unknown', 'Punttipojat', -160, false, 1);
+insert into transactions (date, transactiontype, transactioner, transaction, pending, accountid) values ('11/17/2023', 'loan', 'Monetarum opintolaina', -100, false, 1);
+insert into transactions (date, transactiontype, transactioner, transaction, pending, accountid) values ('11/10/2023', 'gov', 'KELA', 1100, false, 1);
+insert into transactions (date, transactiontype, transactioner, transaction, pending, message, accountid) values ('10/30/2023', 'unknown', 'Markku Vaara', 500, false, 'Rahaa säästöön', 2);
 
 insert into messages (date, read, title, message, userid) values ('01/01/2024', false, 'Tervetuloa', 'Tervetuloa, uusi asiakas. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque. Et malesuada fames ac turpis egestas integer eget. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque. Integer feugiat scelerisque varius morbi enim nunc.', 1);
 

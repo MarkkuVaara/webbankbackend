@@ -1,19 +1,12 @@
 
+const Message = require('../models/message');
+
 const messagesRouter = require('express').Router();
 
-let messages = [
-    {
-      id: 1,
-      title: "Otsikko",
-      date: "02/05/2024",
-      message: "Liplap blaablaa ipsum",
-      userid: 1
-    }
-]
-
-messagesRouter.get('/', (request, response) => {
+messagesRouter.get('/', async (request, response) => {
+    const messages = await Message.findAll();
     response.json(messages);
-  });
+});
 
 messagesRouter.get('/:id', (request, response, next) => {
     const id = Number(request.params.id);

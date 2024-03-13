@@ -19,11 +19,11 @@ Transaction.init({
       allowNull: false
     },
     transactiontype: {
-      type: DataTypes.VARCHAR(20),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     transactioner: {
-      type: DataTypes.VARCHAR(50),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     pending: {
@@ -31,11 +31,11 @@ Transaction.init({
       allowNull: false
     },
     target: {
-      type: DataTypes.VARCHAR(50),
+      type: DataTypes.TEXT,
       allowNull: true
     },
     message: {
-      type: DataTypes.VARCHAR(500),
+      type: DataTypes.TEXT,
       allowNull: true
     },
     reference: {

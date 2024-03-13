@@ -15,7 +15,7 @@ Account.init({
       allowNull: false
     },
     name: {
-      type: DataTypes.VARCHAR(50),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     balance: {

@@ -16,23 +16,23 @@ User.init({
     allowNull: false
   },
   password: {
-    type: DataTypes.VARCHAR(100),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   firstname: {
-    type: DataTypes.VARCHAR(20),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   middlename: {
-    type: DataTypes.VARCHAR(20),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   lastname: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   address: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   postnumber: {
@@ -40,19 +40,19 @@ User.init({
     allowNull: false
   },
   city: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   email: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   phone: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   },
   homebank: {
-    type: DataTypes.VARCHAR(50),
+    type: DataTypes.TEXT,
     allowNull: false
   }
 }, {
