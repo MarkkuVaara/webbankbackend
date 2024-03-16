@@ -1,5 +1,6 @@
 
 const Message = require('../models/message');
+Message.sync();
 
 const messagesRouter = require('express').Router();
 
@@ -18,18 +19,23 @@ messagesRouter.get('/:id', async (request, response, next) => {
     }
 });
 
-messagesRouter.delete('/:id', (request, response, next) => {
+/* messagesRouter.delete('/:id', (request, response, next) => {
     const id = Number(request.params.id);
     messages = messages.filter(message => message.id !== id);
   
     response.status(204).end();
     next(error);
-});
+}); */
 
 messagesRouter.post('/', async (request, response) => {
   
-    const message = await Message.create(request.body);
-    response.json(message);
+    try {
+      const message = await Message.create(request.body);
+      response.json(message);
+    } catch(error) {
+      console.log(error);
+     return response.status(400).json({ error });
+    }
 
 });
 

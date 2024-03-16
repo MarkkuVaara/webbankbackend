@@ -1,5 +1,6 @@
 
 const User = require('../models/user');
+User.sync();
 
 const usersRouter = require('express').Router();
 
@@ -18,19 +19,24 @@ usersRouter.get('/:id', async (request, response, next) => {
     }
 });
 
-usersRouter.delete('/:id', (request, response, next) => {
+/* usersRouter.delete('/:id', (request, response, next) => {
     const id = Number(request.params.id);
     users = users.filter(user => user.id !== id);
   
     response.status(204).end();
     next(error);
-});
+}); */
 
 usersRouter.post('/', async (request, response) => {
-  
-    const user = await User.create(request.body);
-    response.json(user);
-    
+
+    try {
+      const user = await User.create(request.body);
+      response.json(user);
+    } catch(error) {
+      console.log(error);
+      return response.status(400).json({ error });
+    }
+
 });
 
 module.exports = usersRouter;

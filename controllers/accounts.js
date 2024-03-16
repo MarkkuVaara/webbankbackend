@@ -1,5 +1,6 @@
 
 const Account = require('../models/account');
+Account.sync();
 
 const accountsRouter = require('express').Router();
 
@@ -18,18 +19,23 @@ accountsRouter.get('/:id', async (request, response, next) => {
     }
 });
 
-accountsRouter.delete('/:id', (request, response, next) => {
+/* accountsRouter.delete('/:id', (request, response, next) => {
     const id = Number(request.params.id);
     accounts = accounts.filter(account => account.id !== id);
   
     response.status(204).end();
     next(error);
-});
+}); */
 
 accountsRouter.post('/', async (request, response) => {
 
-    const account = await Account.create(request.body);
-    response.json(account);
+    try {
+      const account = await Account.create(request.body);
+      response.json(account);
+    } catch(error) {
+      console.log(error);
+      return response.status(400).json({ error });
+    }
 
 });
 
