@@ -8,15 +8,14 @@ usersRouter.get('/', async (request, response) => {
     response.json(users);
 });
 
-usersRouter.get('/:id', (request, response, next) => {
+usersRouter.get('/:id', async (request, response, next) => {
     const id = Number(request.params.id);
-    const user = users.find(user => user.id === id);
+    const user = await User.findByPk(id);
     if (user) {
       response.json(user);
     } else {
       response.status(404).end();
     }
-    next(error);
 });
 
 usersRouter.delete('/:id', (request, response, next) => {
@@ -27,18 +26,11 @@ usersRouter.delete('/:id', (request, response, next) => {
     next(error);
 });
 
-usersRouter.post('/', (request, response) => {
+usersRouter.post('/', async (request, response) => {
   
-    const maxId = users.length > 0
-      ? Math.max(...users.map(n => n.id)) 
-      : 0
-  
-    const user = request.body;
-    user.id = maxId + 1;
-  
-    users = users.concat(user);
-  
+    const user = await User.create(request.body);
     response.json(user);
+    
 });
 
 module.exports = usersRouter;

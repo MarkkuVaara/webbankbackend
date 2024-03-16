@@ -8,15 +8,14 @@ transactionsRouter.get('/', async (request, response) => {
     response.json(transactions);
 });
 
-transactionsRouter.get('/:id', (request, response, next) => {
+transactionsRouter.get('/:id', async (request, response, next) => {
     const id = Number(request.params.id);
-    const transaction = transactions.find(transaction => transaction.id === id);
+    const transaction = await Transaction.findByPk(id);
     if (transaction) {
       response.json(transaction);
     } else {
       response.status(404).end();
     }
-    next(error);
 });
 
 transactionsRouter.delete('/:id', (request, response, next) => {
@@ -27,18 +26,11 @@ transactionsRouter.delete('/:id', (request, response, next) => {
     next(error);
 });
 
-transactionsRouter.post('/', (request, response) => {
+transactionsRouter.post('/', async (request, response) => {
   
-    const maxId = transactions.length > 0
-      ? Math.max(...transactions.map(n => n.id)) 
-      : 0
-  
-    const transaction = request.body;
-    transaction.id = maxId + 1;
-  
-    transactions = transactions.concat(transaction);
-  
+    const transaction = await Transaction.create(request.body);
     response.json(transaction);
+
 });
 
 module.exports = transactionsRouter;

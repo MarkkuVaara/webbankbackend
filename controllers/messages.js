@@ -8,15 +8,14 @@ messagesRouter.get('/', async (request, response) => {
     response.json(messages);
 });
 
-messagesRouter.get('/:id', (request, response, next) => {
+messagesRouter.get('/:id', async (request, response, next) => {
     const id = Number(request.params.id);
-    const message = messages.find(message => message.id === id);
+    const message = await Message.findByPk(id);
     if (message) {
       response.json(message);
     } else {
       response.status(404).end();
     }
-    next(error);
 });
 
 messagesRouter.delete('/:id', (request, response, next) => {
@@ -27,18 +26,11 @@ messagesRouter.delete('/:id', (request, response, next) => {
     next(error);
 });
 
-messagesRouter.post('/', (request, response) => {
+messagesRouter.post('/', async (request, response) => {
   
-    const maxId = messages.length > 0
-      ? Math.max(...messages.map(n => n.id)) 
-      : 0
-  
-    const message = request.body;
-    message.id = maxId + 1;
-  
-    messages = messages.concat(message);
-  
+    const message = await Message.create(request.body);
     response.json(message);
+
 });
 
 module.exports = messagesRouter;
