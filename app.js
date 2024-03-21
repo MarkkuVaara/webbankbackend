@@ -11,6 +11,7 @@ const usersRouter = require('./controllers/users');
 const accountsRouter = require('./controllers/accounts');
 const transactionsRouter = require('./controllers/transactions');
 const messagesRouter = require('./controllers/messages');
+const loginRouter = require('./controllers/login');
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/messages', messagesRouter);
+app.use('/api/login', loginRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
