@@ -25,10 +25,6 @@ Message.init({
     message: {
       type: DataTypes.TEXT,
       allowNull: false
-    },
-    userid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
     }
   }, {
     sequelize,

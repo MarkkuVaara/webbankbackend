@@ -1,6 +1,5 @@
 
-const Account = require('../models/account');
-Account.sync();
+const { Account } = require('../models/index');
 
 const accountsRouter = require('express').Router();
 

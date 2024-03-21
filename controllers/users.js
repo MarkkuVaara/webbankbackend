@@ -1,6 +1,5 @@
 
-const User = require('../models/user');
-User.sync();
+const { User } = require('../models/index');
 
 const usersRouter = require('express').Router();
 

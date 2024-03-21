@@ -1,6 +1,5 @@
 
-const Transaction = require('../models/transaction');
-Transaction.sync();
+const { Transaction } = require('../models/index');
 
 const transactionsRouter = require('express').Router();
 

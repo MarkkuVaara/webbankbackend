@@ -25,10 +25,6 @@ Account.init({
     balancelimit: {
       type: DataTypes.INTEGER,
       allowNull: true
-    },
-    userid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
     }
   }, {
     sequelize,

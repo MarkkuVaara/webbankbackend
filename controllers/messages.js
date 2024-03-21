@@ -1,6 +1,5 @@
 
-const Message = require('../models/message');
-Message.sync();
+const { Message } = require('../models/index');
 
 const messagesRouter = require('express').Router();
 

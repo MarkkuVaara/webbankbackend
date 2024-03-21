@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const loginrouter = require('express').Router();
 
 const { SECRET } = require('../utils/config');
-const User = require('../models/user');
+const { User } = require('../models/index');
 
 loginrouter.post('/', async (request, response) => {
 

@@ -41,10 +41,6 @@ Transaction.init({
     reference: {
       type: DataTypes.INTEGER,
       allowNull: true
-    },
-    accountid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
     }
   }, {
     sequelize,
