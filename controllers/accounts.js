@@ -1,7 +1,28 @@
 
-const { Account } = require('../models/index');
+const { Account, User } = require('../models/index');
 
 const accountsRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+const { SECRET } = require('../utils/config');
+
+const tokenExtractor = (request, response, next) => {
+
+  const authorization = request.get('authorization');
+
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    try {
+      console.log(authorization.substring(7));
+      request.decodedToken = jwt.verify(authorization.substring(7), SECRET);
+    } catch (error){
+      console.log(error);
+      return response.status(401).json({ error: 'token invalid' });
+    }
+  } else {
+    return response.status(401).json({ error: 'token missing' });
+  }
+  next();
+
+};
 
 accountsRouter.get('/', async (request, response) => {
     const accounts = await Account.findAll();
@@ -26,10 +47,11 @@ accountsRouter.get('/:id', async (request, response, next) => {
     next(error);
 }); */
 
-accountsRouter.post('/', async (request, response) => {
+accountsRouter.post('/', tokenExtractor, async (request, response) => {
 
     try {
-      const account = await Account.create(request.body);
+      const user = await User.findByPk(request.decodedToken.id);
+      const account = await Account.create({...request.body, userId: user.id, date: new Date()});
       response.json(account);
     } catch(error) {
       console.log(error);

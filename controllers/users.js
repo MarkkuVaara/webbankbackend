@@ -1,10 +1,14 @@
 
-const { User } = require('../models/index');
+const { User, Account } = require('../models/index');
 
 const usersRouter = require('express').Router();
 
 usersRouter.get('/', async (request, response) => {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: {
+        model: Account
+      }
+    });
     response.json(users);
 });
 
