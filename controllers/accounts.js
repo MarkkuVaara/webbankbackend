@@ -51,7 +51,7 @@ accountsRouter.post('/', tokenExtractor, async (request, response) => {
 
     try {
       const user = await User.findByPk(request.decodedToken.id);
-      const account = await Account.create({...request.body, userId: user.id, date: new Date()});
+      const account = await Account.create({...request.body, userId: user.id, creationdate: new Date()});
       response.json(account);
     } catch(error) {
       console.log(error);
