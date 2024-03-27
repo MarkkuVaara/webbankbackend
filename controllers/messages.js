@@ -18,13 +18,15 @@ messagesRouter.get('/:id', async (request, response, next) => {
     }
 });
 
-/* messagesRouter.delete('/:id', (request, response, next) => {
+messagesRouter.delete('/:id', async (request, response, next) => {
     const id = Number(request.params.id);
-    messages = messages.filter(message => message.id !== id);
-  
-    response.status(204).end();
-    next(error);
-}); */
+    const message = await Message.findByPk(id);
+    if (message) {
+      response.json(message);
+    } else {
+      response.status(404).end();
+    }
+});
 
 messagesRouter.post('/', async (request, response) => {
   
