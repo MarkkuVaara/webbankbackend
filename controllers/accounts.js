@@ -25,7 +25,9 @@ const tokenExtractor = (request, response, next) => {
 };
 
 accountsRouter.get('/', async (request, response) => {
-    const accounts = await Account.findAll();
+    const accounts = await Account.findAll({
+      attributes: { exclude: ['userId'] },
+    });
     response.json(accounts);
 });
 

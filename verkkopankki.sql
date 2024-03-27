@@ -45,7 +45,8 @@ CREATE TABLE transactions
   reference INTEGER
 );
 
-insert into users (usernumber, password, firstname, middlename, lastname, address, postnumber, city, email, phone, homebank) values (155010, 'cdk51dhh', 'Markku', 'Tapio', 'Vaara', 'Kullerovuorentie 22 B 9', 80000, 'Fingerpori', 'markku.vaara72@customer.com', '0500 111 222', 'Fingerporin Monetarum');
+insert into users (usernumber, password, firstname, middlename, lastname, address, postnumber, city, email, phone, homebank) values (155010, '$2b$10$yTHWnVOs6iKyTBJ5JMqUR.cdioYUn0GFppao99jdmnzzS69uMonZC', 'Markku', 'Tapio', 'Vaara', 'Kullerovuorentie 22 B 9', 80000, 'Fingerpori', 'markku.vaara72@customer.com', '0500 111 222', 'Fingerporin Monetarum');
+insert into users (usernumber, password, firstname, middlename, lastname, address, postnumber, city, email, phone, homebank) values (155999, '$2b$10$Opk3vm1WaQJOe13jAn0tyunRRiv7zFhP.amBmMSW4Q8j/8.O7IZYm', 'Seppo', 'Johannes', 'Virolainen', 'Kissamäentie 99 A 1', 90000, 'Kissakaupunki', 'seppo.virolainen@customer.com', '0500 111 111', 'Kissakaupungin Monetarum');
 
 insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/05/2023', 'KÄYTTÖTILI 1009004555', 590.45, null, 1);
 insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/05/2023', 'SÄÄSTÖTILI 1009004577', 1010, null, 1);

@@ -1,5 +1,6 @@
 
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const loginrouter = require('express').Router();
 
 const { SECRET } = require('../utils/config');
@@ -15,7 +16,9 @@ loginrouter.post('/', async (request, response) => {
     }
   });
 
-  const passwordCorrect = body.password === user.password;
+  const passwordCorrect = user === null
+    ? false
+    : await bcrypt.compare(body.password, user.password)
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
