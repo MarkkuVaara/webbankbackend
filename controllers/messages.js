@@ -40,4 +40,22 @@ messagesRouter.post('/', async (request, response) => {
 
 });
 
+messagesRouter.put('/:id', async (request, response) => {
+
+  try {
+    const message = await Message.findByPk(request.params.id);
+
+    if (request.body.read == true) {
+      message.read = true;
+    }
+    
+    await message.save();
+    response.json(message);
+
+  } catch(error) {
+    console.log(error);
+    return response.status(400).json({ error });
+  }
+});
+
 module.exports = messagesRouter;

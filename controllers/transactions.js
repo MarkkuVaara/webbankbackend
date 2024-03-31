@@ -65,4 +65,31 @@ transactionsRouter.post('/', tokenExtractor, async (request, response) => {
 
 });
 
+transactionsRouter.put('/:id', tokenExtractor, async (request, response) => {
+
+  try {
+    const transaction = await Transaction.findByPk(request.params.id);
+    const account = await Account.findByPk(request.body.accountidd);
+    const user = await User.findByPk(request.decodedToken.id);
+
+    if (request.body.pending == true) {
+      transaction.pending = true;
+    }
+    if (request.body.pending == false) {
+      transaction.pending = false;
+    }
+    
+    if (account.userId == user.id) {
+      await transaction.save();
+      response.json(transaction);
+    } else {
+      response.json({});
+    }
+
+  } catch(error) {
+    console.log(error);
+    return response.status(400).json({ error });
+  }
+});
+
 module.exports = transactionsRouter;
