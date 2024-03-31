@@ -70,4 +70,52 @@ usersRouter.post('/', tokenExtractor, async (request, response) => {
 
 });
 
+usersRouter.put('/:id', tokenExtractor, async (request, response) => {
+
+  const body = request.body;
+
+  try {
+    const user = await User.findByPk(request.params.id);
+    const tokenuser = await User.findByPk(request.decodedToken.id);
+
+    if (body.usernumber) {
+      user.usernumber = body.usernumber;
+    }
+    if (body.firstname) {
+      user.firstname = body.firstname;
+    }
+    if (body.middlename) {
+      user.middlename = body.middlename;
+    }
+    if (body.lastname) {
+      user.lastname = body.lastname;
+    }
+    if (body.address) {
+      user.address = body.address;
+    }
+    if (body.postnumber) {
+      user.postnumber = body.postnumber;
+    }
+    if (body.city) {
+      user.city = body.city;
+    }
+    if (body.email) {
+      user.email = body.email;
+    }
+    if (body.phone) {
+      user.phone = body.phone;
+    }
+    if (body.homebank) {
+      user.homebank = body.homebank;
+    }
+
+    await user.save();
+    response.json(user);
+  } catch(error) {
+    console.log(error);
+    return response.status(400).json({ error });
+  }
+
+});
+
 module.exports = usersRouter;

@@ -62,4 +62,27 @@ accountsRouter.post('/', tokenExtractor, async (request, response) => {
 
 });
 
+accountsRouter.put('/:id', tokenExtractor, async (request, response) => {
+
+  const body = request.body;
+
+  try {
+    const account = await Account.findByPk(request.params.id);
+    const tokenuser = await User.findByPk(request.decodedToken.id);
+
+    if (body.balance) {
+      account.balance = body.balance;
+    }
+    if (body.balancelimit) {
+      account.balancelimit = body.balancelimit;
+    }
+    
+    await account.save();
+    response.json(account);
+  } catch(error) {
+    console.log(error);
+    return response.status(400).json({ error });
+  }
+});
+
 module.exports = accountsRouter;
