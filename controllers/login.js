@@ -6,15 +6,16 @@ const loginrouter = require('express').Router();
 const { SECRET } = require('../utils/config');
 const { User } = require('../models/index');
 
-loginrouter.post('/', async (request, response) => {
+loginrouter.post('/', async (request, response, error) => {
 
   const body = request.body;
 
-  const user = await User.findOne({
-    where: {
-      usernumber: body.usernumber
-    }
-  });
+  try {
+    const user = await User.findOne({
+      where: {
+        usernumber: body.usernumber
+      }
+    });
 
   const passwordCorrect = user === null
     ? false
@@ -36,6 +37,11 @@ loginrouter.post('/', async (request, response) => {
   response
     .status(200)
     .send({ token, username: user.username, name: user.name });
+
+  } catch(error) {
+    console.log(error);
+    return response.status(400).json({ error });
+  }
 
 })
 

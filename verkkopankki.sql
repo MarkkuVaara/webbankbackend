@@ -51,6 +51,7 @@ insert into users (usernumber, password, firstname, middlename, lastname, addres
 insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/05/2023', 'KÄYTTÖTILI 1009004555', 590.45, null, 1);
 insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/05/2023', 'SÄÄSTÖTILI 1009004577', 1010, null, 1);
 insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/15/2023', 'LAINATILI 1008001110', -2915, -3000, 1);
+insert into accounts (creationdate, name, balance, balancelimit, user_id) values ('11/05/2023', 'KÄYTTÖTILI 1009999999', 220, null, 2);
 
 insert into transactions (date, transactiontype, transactioner, transaction, pending, account_id) values ('11/19/2023', 'shop', 'K-Citymarket', -22, false, 1);
 insert into transactions (date, transactiontype, transactioner, transaction, pending, account_id) values ('11/18/2023', 'unknown', 'Punttipojat', -160, false, 1);
@@ -59,4 +60,3 @@ insert into transactions (date, transactiontype, transactioner, transaction, pen
 insert into transactions (date, transactiontype, transactioner, transaction, pending, message, account_id) values ('10/30/2023', 'unknown', 'Markku Vaara', 500, false, 'Rahaa säästöön', 2);
 
 insert into messages (date, read, title, message, user_id) values ('01/01/2024', false, 'Tervetuloa', 'Tervetuloa, uusi asiakas. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque. Et malesuada fames ac turpis egestas integer eget. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque. Integer feugiat scelerisque varius morbi enim nunc.', 1);
-
