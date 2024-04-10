@@ -36,7 +36,7 @@ loginrouter.post('/', async (request, response, error) => {
 
   response
     .status(200)
-    .send({ token, username: user.username, name: user.name });
+    .send({ token, usernumber: user.usernumber });
 
   } catch(error) {
     console.log(error);
