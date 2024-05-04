@@ -81,6 +81,9 @@ usersRouter.put('/:id', tokenExtractor, async (request, response) => {
     if (body.usernumber) {
       user.usernumber = body.usernumber;
     }
+    if (body.password) {
+      user.password = body.password;
+    }
     if (body.firstname) {
       user.firstname = body.firstname;
     }
