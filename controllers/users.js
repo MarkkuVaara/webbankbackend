@@ -74,15 +74,14 @@ usersRouter.put('/:id', tokenExtractor, async (request, response) => {
 
   const body = request.body;
 
+  const saltRounds = 10;
+
   try {
     const user = await User.findByPk(request.params.id);
     const tokenuser = await User.findByPk(request.decodedToken.id);
 
     if (body.usernumber) {
       user.usernumber = body.usernumber;
-    }
-    if (body.password) {
-      user.password = body.password;
     }
     if (body.firstname) {
       user.firstname = body.firstname;
@@ -110,6 +109,40 @@ usersRouter.put('/:id', tokenExtractor, async (request, response) => {
     }
     if (body.homebank) {
       user.homebank = body.homebank;
+    }
+
+    if (body.password) {
+
+      const passwordHash = await bcrypt.hash(body.password, saltRounds);
+
+      bcrypt.compare(passwordHash, user.password, (err, isMatch) => {
+        if (err) {
+          return response.status(400).json({ err });
+        } else if (isMatch) {
+  
+          if(body.npassword !== body.npassword2) {
+            console.log("Virhe syötteessä 'uusi salasana'");
+          } else {
+  
+            bcrypt.genSalt(10, (saltErr, salt) => {
+              bcrypt.hash(body.npassword, salt, (hashErr, hashedPassword) => {
+                if (hashErr) {
+                  console.log('Error hashing new password:', hashErr);
+                } else {
+  
+                  user.password = hashedPassword;
+                  console.log("Salasana vaihdettu");
+
+                }
+              })
+            })
+
+          }
+
+        }
+
+      })
+
     }
 
     await user.save();
