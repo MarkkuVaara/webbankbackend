@@ -113,35 +113,23 @@ usersRouter.put('/:id', tokenExtractor, async (request, response) => {
 
     if (body.password) {
 
-      const passwordHash = await bcrypt.hash(body.password, saltRounds);
+      const isMatch = await bcrypt.compare(body.password, user.password);
 
-      bcrypt.compare(passwordHash, user.password, (err, isMatch) => {
-        if (err) {
-          return response.status(400).json({ err });
-        } else if (isMatch) {
-  
-          if(body.npassword !== body.npassword2) {
-            console.log("Virhe syötteessä 'uusi salasana'");
-          } else {
-  
-            bcrypt.genSalt(10, (saltErr, salt) => {
-              bcrypt.hash(body.npassword, salt, (hashErr, hashedPassword) => {
-                if (hashErr) {
-                  console.log('Error hashing new password:', hashErr);
-                } else {
-  
-                  user.password = hashedPassword;
-                  console.log("Salasana vaihdettu");
+      if (!isMatch) {
+        console.log("Error matching old password");
+        return response.status(400).json({ error: "Syötetty vanha salasana on väärä." });
+      }
 
-                }
-              })
-            })
+      if (body.npassword !== body.npassword2) {
+        console.log("Error matching new passwords");
+        return response.status(400).json({ error: "Virhe syötteessä 'uusi salasana'" });
+      }
 
-          }
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(body.npassword, salt);
 
-        }
-
-      })
+      user.password = hashedPassword;
+      console.log("Salasana vaihdettu");
 
     }
 
