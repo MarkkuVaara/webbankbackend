@@ -20,7 +20,7 @@ messagesRouter.get('/:id', async (request, response, next) => {
 
 messagesRouter.delete('/:id', async (request, response, next) => {
     const id = Number(request.params.id);
-    const message = await Message.findByPk(id);
+    const message = await Message.destroy({where:{id: id}});
     if (message) {
       response.json(message);
     } else {
