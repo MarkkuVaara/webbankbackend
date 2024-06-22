@@ -1,5 +1,6 @@
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 
@@ -12,9 +13,11 @@ const accountsRouter = require('./controllers/accounts');
 const transactionsRouter = require('./controllers/transactions');
 const messagesRouter = require('./controllers/messages');
 const loginRouter = require('./controllers/login');
+const predictRouter = require('./controllers/predict');
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.use(middleware.requestLogger);
 app.use(express.static('dist'));
@@ -24,6 +27,7 @@ app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/messages', messagesRouter);
 app.use('/api/login', loginRouter);
+app.use('/predict', predictRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
