@@ -21,11 +21,9 @@ predictRouter.post('/', (req, res) => {
     }
 
     const prediction = dt.predict(instance);
-    const probability = dt.predict_proba(instance);
 
     res.json({
         approved: prediction,
-        probability: probability
     });
 
 });
