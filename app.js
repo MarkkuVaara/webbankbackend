@@ -27,7 +27,7 @@ app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/messages', messagesRouter);
 app.use('/api/login', loginRouter);
-app.use('/predict', predictRouter);
+app.use('/api/predict', predictRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
