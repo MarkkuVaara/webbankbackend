@@ -1,14 +1,14 @@
 
 class TreeNode {
-    constructor(attribute, predicateName, pivot, outcome) {
-        this.attribute = attribute;
-        this.predicateName = predicateName;
-        this.pivot = pivot;
-        this.outcome = outcome;
-        this.matches = null;
-        this.notMatches = null;
+    constructor(attribute = null, predicateName = null, pivot = null, outcome = null, matches = null, notMatches = null) {
+      this.attribute = attribute;
+      this.predicateName = predicateName;
+      this.pivot = pivot;
+      this.outcome = outcome;
+      this.matches = matches;
+      this.notMatches = notMatches;
     }
-}
+  }
 
 class CustomDecisionTree {
     constructor(data, className, features, maxDepth = 10) {
@@ -19,37 +19,84 @@ class CustomDecisionTree {
         this.root = this.buildTree(data, features, 0);
     }
 
-    buildTree(data, features, depth) {
-        if (data.length === 0 || depth >= this.maxDepth) {
-            return null;
+    buildTree(data, features, maxDepth, currentDepth = 0) {
+
+        const uniqueOutcomes = [...new Set(data.map(item => item.approved))];
+        if (uniqueOutcomes.length === 1) {
+          return new TreeNode(null, null, null, uniqueOutcomes[0]);
         }
-
-        const classValues = data.map(row => row[this.className]);
-        const uniqueClassValues = [...new Set(classValues)];
-
-        if (uniqueClassValues.length === 1) {
-            return new TreeNode(null, null, null, uniqueClassValues[0]);
+      
+        if (features.length === 0 || currentDepth >= maxDepth) {
+          const majorityOutcome = data.reduce((acc, item) => {
+            acc[item.approved] = (acc[item.approved] || 0) + 1;
+            return acc;
+          }, {});
+          return new TreeNode(null, null, null, majorityOutcome[true] >= majorityOutcome[false]);
         }
-
-        const bestFeature = this.getBestFeature(data, features);
+      
+        const bestFeature = this.findBestFeature(data, features);
         if (!bestFeature) {
-            const majorityClass = this.getMajorityClass(classValues);
-            return new TreeNode(null, null, null, majorityClass);
+          return null;
         }
-
-        const bestFeatureValues = data.map(row => row[bestFeature]);
-        const uniqueFeatureValues = [...new Set(bestFeatureValues)];
-
-        const node = new TreeNode(bestFeature, '===', uniqueFeatureValues[0], null);
-
-        const matches = data.filter(row => row[bestFeature] === uniqueFeatureValues[0]);
-        const notMatches = data.filter(row => row[bestFeature] !== uniqueFeatureValues[0]);
-
-        node.matches = this.buildTree(matches, features, depth + 1);
-        node.notMatches = this.buildTree(notMatches, features, depth + 1);
-
-        return node;
-    }
+      
+        const { trueSet, falseSet } = this.splitData(data, bestFeature);
+        const newFeatures = features.filter(f => f !== bestFeature.attribute);
+      
+        const matchesNode = this.buildTree(trueSet, newFeatures, maxDepth, currentDepth + 1);
+        const notMatchesNode = this.buildTree(falseSet, newFeatures, maxDepth, currentDepth + 1);
+      
+        return new TreeNode(bestFeature.attribute, '>=', bestFeature.pivot, null, matchesNode, notMatchesNode);
+      }
+      
+    
+    splitData(data, feature) {
+        const { attribute, pivot } = feature;
+        const trueSet = data.filter(item => item[attribute] >= pivot);
+        const falseSet = data.filter(item => item[attribute] < pivot);
+        return { trueSet, falseSet };
+      }
+      
+    calculateEntropy(data) {
+        const total = data.length;
+        const counts = data.reduce((acc, item) => {
+          acc[item.approved] = (acc[item.approved] || 0) + 1;
+          return acc;
+        }, {});
+        return Object.values(counts).reduce((entropy, count) => {
+          const probability = count / total;
+          return entropy - probability * Math.log2(probability);
+        }, 0);
+      }
+    
+    informationGain(data, trueSet, falseSet) {
+        const total = data.length;
+        const pTrue = trueSet.length / total;
+        const pFalse = falseSet.length / total;
+        return this.calculateEntropy(data) - (pTrue * this.calculateEntropy(trueSet)) - (pFalse * this.calculateEntropy(falseSet));
+      }
+      
+    findBestFeature(data, features) {
+        let bestGain = 0;
+        let bestFeature = null;
+      
+        features.forEach(attribute => {
+          const uniqueValues = [...new Set(data.map(item => item[attribute]))];
+          uniqueValues.forEach(value => {
+            const feature = { attribute, pivot: value };
+            const { trueSet, falseSet } = this.splitData(data, feature);
+            if (trueSet.length > 0 && falseSet.length > 0) {
+              const gain = this.informationGain(data, trueSet, falseSet);
+              if (gain > bestGain) {
+                bestGain = gain;
+                bestFeature = feature;
+              }
+            }
+          });
+        });
+      
+        return bestFeature;
+      }
+      
 
     getBestFeature(data, features) {
         let bestFeature = null;
@@ -76,13 +123,18 @@ class CustomDecisionTree {
         return Object.keys(classCounts).reduce((a, b) => classCounts[a] > classCounts[b] ? a : b);
     }
 
-    predict(instance) {
-        let node = this.root;
-        while (node.outcome === null) {
-            const value = instance[node.attribute];
-            node = value === node.pivot ? node.matches : node.notMatches;
+    predict(tree, example) {
+
+        if (tree.outcome !== null) {
+            return tree.outcome;
         }
-        return node.outcome;
+        
+        const value = example[tree.attribute];
+        if (value >= tree.pivot) {
+            return predict(tree.matches, example);
+        } else {
+            return predict(tree.notMatches, example);
+        }
     }
 
     toJSON() {
