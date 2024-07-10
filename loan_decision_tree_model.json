@@ -7,11 +7,95 @@
     "repayment_history"
   ],
   "tree": {
-    "attribute": null,
-    "predicateName": null,
-    "pivot": null,
-    "outcome": true,
-    "matches": null,
-    "notMatches": null
+    "attribute": "income",
+    "predicateName": ">=",
+    "pivot": 600,
+    "outcome": null,
+    "matches": {
+      "attribute": "existing_debts",
+      "predicateName": ">=",
+      "pivot": 20000,
+      "outcome": null,
+      "matches": {
+        "attribute": "loan_amount",
+        "predicateName": ">=",
+        "pivot": 100000,
+        "outcome": null,
+        "matches": {
+          "attribute": null,
+          "predicateName": null,
+          "pivot": null,
+          "outcome": false,
+          "matches": null,
+          "notMatches": null
+        },
+        "notMatches": {
+          "attribute": "repayment_history",
+          "predicateName": ">=",
+          "pivot": "poor",
+          "outcome": null,
+          "matches": {
+            "attribute": null,
+            "predicateName": null,
+            "pivot": null,
+            "outcome": false,
+            "matches": null,
+            "notMatches": null
+          },
+          "notMatches": {
+            "attribute": null,
+            "predicateName": null,
+            "pivot": null,
+            "outcome": true,
+            "matches": null,
+            "notMatches": null
+          }
+        }
+      },
+      "notMatches": {
+        "attribute": "repayment_history",
+        "predicateName": ">=",
+        "pivot": "poor",
+        "outcome": null,
+        "matches": {
+          "attribute": "loan_amount",
+          "predicateName": ">=",
+          "pivot": 50000,
+          "outcome": null,
+          "matches": {
+            "attribute": null,
+            "predicateName": null,
+            "pivot": null,
+            "outcome": false,
+            "matches": null,
+            "notMatches": null
+          },
+          "notMatches": {
+            "attribute": null,
+            "predicateName": null,
+            "pivot": null,
+            "outcome": true,
+            "matches": null,
+            "notMatches": null
+          }
+        },
+        "notMatches": {
+          "attribute": null,
+          "predicateName": null,
+          "pivot": null,
+          "outcome": true,
+          "matches": null,
+          "notMatches": null
+        }
+      }
+    },
+    "notMatches": {
+      "attribute": null,
+      "predicateName": null,
+      "pivot": null,
+      "outcome": false,
+      "matches": null,
+      "notMatches": null
+    }
   }
 }

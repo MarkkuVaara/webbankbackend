@@ -16,7 +16,7 @@ class CustomDecisionTree {
         this.className = className;
         this.features = features;
         this.maxDepth = maxDepth;
-        this.root = this.buildTree(data, features, 0);
+        this.root = this.buildTree(data, features, maxDepth, 0);
     }
 
     buildTree(data, features, maxDepth, currentDepth = 0) {
@@ -131,9 +131,9 @@ class CustomDecisionTree {
         
         const value = example[tree.attribute];
         if (value >= tree.pivot) {
-            return predict(tree.matches, example);
+            return this.predict(tree.matches, example);
         } else {
-            return predict(tree.notMatches, example);
+            return this.predict(tree.notMatches, example);
         }
     }
 

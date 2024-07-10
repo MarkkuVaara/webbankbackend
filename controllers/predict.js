@@ -20,7 +20,7 @@ predictRouter.post('/', (req, res) => {
         }
     }
 
-    const prediction = dt.predict(instance);
+    const prediction = dt.predict(dt.root, instance);
 
     res.json({
         approved: prediction,

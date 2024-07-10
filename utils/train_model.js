@@ -52,6 +52,7 @@ const features = ['income', 'loan_amount', 'existing_debts', 'repayment_history'
 const maxDepth = 5;
 
 const dt = new CustomDecisionTree(data, className, features, maxDepth);
+console.log(dt);
 
 const model = {
     className: className,
