@@ -19,7 +19,7 @@
       "matches": {
         "attribute": "loan_amount",
         "predicateName": ">=",
-        "pivot": 100000,
+        "pivot": 200000,
         "outcome": null,
         "matches": {
           "attribute": null,
@@ -53,14 +53,14 @@
         }
       },
       "notMatches": {
-        "attribute": "repayment_history",
+        "attribute": "loan_amount",
         "predicateName": ">=",
-        "pivot": "poor",
+        "pivot": 50000,
         "outcome": null,
         "matches": {
-          "attribute": "loan_amount",
+          "attribute": "repayment_history",
           "predicateName": ">=",
-          "pivot": 50000,
+          "pivot": "poor",
           "outcome": null,
           "matches": {
             "attribute": null,

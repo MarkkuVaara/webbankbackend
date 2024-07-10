@@ -11,7 +11,7 @@ class TreeNode {
   }
 
 class CustomDecisionTree {
-    constructor(data, className, features, maxDepth = 10) {
+    constructor(data, className, features, maxDepth) {
         this.data = data;
         this.className = className;
         this.features = features;

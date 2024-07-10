@@ -1,6 +1,5 @@
 
 const CustomDecisionTree = require('./custom_decision_tree');
-const fs = require('fs');
 
 const data = [
     { income: 50000, loan_amount: 20000, existing_debts: 10000, repayment_history: 'good', approved: true },
@@ -67,14 +66,51 @@ const className = 'approved';
 const features = ['income', 'loan_amount', 'existing_debts', 'repayment_history'];
 const maxDepth = 10;
 
-const dt = new CustomDecisionTree(data, className, features, maxDepth);
-console.log(dt);
-
-const model = {
-    className: className,
-    features: features,
-    tree: dt.toJSON()
+const trainTestSplit = (data, testSize = 0.2) => {
+    const shuffled = data.sort(() => 0.5 - Math.random());
+    const splitIndex = Math.floor(data.length * (1 - testSize));
+    const trainData = shuffled.slice(0, splitIndex);
+    const testData = shuffled.slice(splitIndex);
+    return { trainData, testData };
 };
 
-fs.writeFileSync('loan_decision_tree_model.json', JSON.stringify(model, null, 2));
-console.log('Model trained and saved to loan_decision_tree_model.json');
+const { trainData, testData } = trainTestSplit(data, 0.2);
+  
+const decisionTree = new CustomDecisionTree(trainData, className, features, maxDepth);
+  
+let correct = 0;
+testData.forEach(example => {
+    const prediction = decisionTree.predict(decisionTree.root, example);
+    if (prediction === example.approved) {
+        correct += 1;
+    }
+});
+  
+const accuracy = correct / testData.length;
+console.log(`Accuracy: ${accuracy * 100}%`);
+
+const depths = [3, 5, 7, 10];
+let bestDepth = depths[0];
+let bestAccuracy = 0;
+
+depths.forEach(depth => {
+  const decisionTree = new CustomDecisionTree(trainData, className, features, depth);
+
+  let correct = 0;
+  testData.forEach(example => {
+    const prediction = decisionTree.predict(decisionTree.root, example);
+    if (prediction === example.approved) {
+      correct += 1;
+    }
+  });
+
+  const accuracy = correct / testData.length;
+  console.log(`Depth: ${depth}, Accuracy: ${accuracy * 100}%`);
+  
+  if (accuracy > bestAccuracy) {
+    bestAccuracy = accuracy;
+    bestDepth = depth;
+  }
+});
+
+console.log(`Best Depth: ${bestDepth}, Best Accuracy: ${bestAccuracy * 100}%`);
