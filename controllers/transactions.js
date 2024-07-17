@@ -52,7 +52,11 @@ transactionsRouter.post('/', tokenExtractor, async (request, response) => {
     try {
       const account = await Account.findByPk(request.body.accountidd);
       const user = await User.findByPk(request.decodedToken.id);
+      const accountuser = await User.findByPk(account.userId);
       if (account.userId == user.id) {
+        const transaction = await Transaction.create({...request.body, accountId: account.id, date: new Date()});
+        response.json(transaction);
+      } else if (user && accountuser) {
         const transaction = await Transaction.create({...request.body, accountId: account.id, date: new Date()});
         response.json(transaction);
       } else {
