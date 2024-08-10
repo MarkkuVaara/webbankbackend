@@ -32,7 +32,11 @@ loginrouter.post('/', async (request, response, error) => {
     id: user.id,
   };
 
-  const token = jwt.sign(userForToken, SECRET);
+  const token = jwt.sign(
+    userForToken, 
+    SECRET,
+    { expiresIn: 15*60 }
+  );
 
   response
     .status(200)
